@@ -1,0 +1,39 @@
+/* タイピングゲーム全体の装飾（body）
+フォントサイズ（font-size）：6emを指定して、デフォルトの6倍の大きさにする
+文字の位置（text-align）：中央揃え（center） */
+body {
+    font-size: 6em;
+    text-align: center;
+}
+/* ゲームの残り秒数が表示されるタイマーの領域（.count）
+余白（margin）：なし
+文字の太さ（font-weight）：太字（bold）
+文字色（color）：グレー（#888） */
+.count {
+    margin: 0;
+    font-weight: bold;
+    color: #888;
+}
+/* テキストが表示される領域（.wrap）
+上の余白（margin-top）：20px
+余白（padding）：上下に80px、左右に40px
+背景色（background-color）：濃いグレー（#666）
+文字の太さ（font-weight）：太さ（bold）
+文字色（color）：白色（#fff） */
+.wrap {
+    margin: 20px;
+    padding: 80px 40px;
+    background-color: #666;
+    font-weight: bold;
+    color: #fff;
+}
+/* 正しくタイプされた場合のテキスト（.typed）
+文字色（color）：薄緑色（lightgreen） */
+.typed {
+    color: lightgreen;
+}
+/* ミスタイプの場合の背景（.mistyped）
+背景色（background-color）：赤色（red） */
+.mistyped {
+    background-color: red;
+}
