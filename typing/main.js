@@ -1,10 +1,13 @@
 //変数の初期化
 /* 画面に表示する文字列を入れる変数（ここではuntypedという名前にする）を準備する */
 let untyped = '';
+let typed = '';
 
 //必要なHTML要素の取得
 /* getElementById()メソッドでHTML要素（ここではuntypedfieldという名前にする）を取得する */
 const untypedfield = document.getElementById('untyped');
+const typedfield = document.getElementById('typed');
+const wrap = document.getElementById('wrap');
 
 //複数のテキストを格納する配列
 const textLists = [
@@ -25,6 +28,11 @@ const textLists = [
 
 //ランダムなテキストを表示
 const createText = () => {
+
+    //正タイプした文字列をクリア
+    typed = '';
+    typedfield.textContent = typed;
+
     /* 第1ステップ:配列の要素数を利用する
       Math.random()では0以上1未満の数字(0.00...から0.99...まで)が出力される
       console.log(Math.random() * textLists.length); */
@@ -43,3 +51,37 @@ const createText = () => {
     untypedfield.textContent = untyped;
 };
 createText();
+
+//キー入力の判定
+const keyPress = e => {
+
+    //誤タイプの場合
+    if(e.key != untyped.substring(0,1)){
+        //誤タイプ時にclassList.add()メソッドでclass属性（mistyped）を追加し、背景色を変更する
+        wrap.classList.add('mistyped');
+        return;
+    }
+
+    //正タイプの場合
+    //正タイプ時にclassList.remove()メソッドでclass属性（mistyped）を削除し、背景色を元に戻す
+    wrap.classList.remove('mistyped');
+    console.log(e.key);
+    typed += untyped.substring(0,1);
+    untyped = untyped.substring(1);
+    typedfield.textContent = typed;
+    untypedfield.textContent = untyped;
+
+    //テキストがなくなったら新しいテキストを表示
+    if(untyped === '') {
+        createText();
+    }
+};
+
+//タイピングスキルのランクを判定
+
+//ゲームを終了
+
+//カウントダウンタイマー
+
+//キーボードのイベント処理
+document.addEventListener('keypress', keyPress);
