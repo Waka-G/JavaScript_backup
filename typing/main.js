@@ -8,6 +8,8 @@ let typed = '';
 const untypedfield = document.getElementById('untyped');
 const typedfield = document.getElementById('typed');
 const wrap = document.getElementById('wrap');
+const start = document.getElementById('start'); //スタート
+const count = document.getElementById('count');
 
 //複数のテキストを格納する配列
 const textLists = [
@@ -50,7 +52,7 @@ const createText = () => {
     untyped = textLists[random];
     untypedfield.textContent = untyped;
 };
-createText();
+// createText();
 
 //キー入力の判定
 const keyPress = e => {
@@ -59,6 +61,12 @@ const keyPress = e => {
     if(e.key != untyped.substring(0,1)){
         //誤タイプ時にclassList.add()メソッドでclass属性（mistyped）を追加し、背景色を変更する
         wrap.classList.add('mistyped');
+
+        //setTimeout()メソッド：指定時間後に一度だけ特定の処理を行う
+        //100ms後に背景色を元に戻す 1/10秒
+        setTimeout(() => {
+            wrap.classList.remove('mistyped');
+        },100);
         return;
     }
 
@@ -80,8 +88,53 @@ const keyPress = e => {
 //タイピングスキルのランクを判定
 
 //ゲームを終了
+const gameOver = id => {
+    //引数id（setInterval()メソッドの戻り値）を受け取って、
+    //カウントダウンを停止してコンソールログにメッセージを表示する
+    clearInterval(id);  //タイマーを停止する
+
+    console.log('ゲーム終了！');
+};
 
 //カウントダウンタイマー
+const timer = () => {
+    //タイマー部分のHTML要素(p要素)を取得する
+    let time = count.textContent;
+
+    const id = setInterval(() => {
+        //カウントダウンする
+        time--;
+        count.textContent = time;   //p要素に現在の時間を表示する
+
+        //カウントが0になったらタイマーを停止する
+        if(time <= 0){
+            // clearInterval(id);
+
+            //カウントが0になったときに関数gameOverを呼び出す
+            //関数gameOverの引数にid（setInterval()メソッドの戻り値）を渡す
+            gameOver(id);
+        }
+    },1000);  //第２因数には１秒(1000ミリ)を設定　これで１秒間隔で処理を行う
+}
 
 //キーボードのイベント処理
-document.addEventListener('keypress', keyPress);
+// document.addEventListener('keypress', keyPress);
+
+//ゲームスタート時の処理
+start.addEventListener('click', () => {
+
+    //カウントダウンタイマーを開始する
+    timer();
+
+    //ランダムなテキストを表示する
+    createText();
+
+    //「スタート」ボタンを非表示にする
+    start.style.display = 'none';
+
+    //キーボードのイベント処理
+    document.addEventListener('keypress', keyPress);
+});
+
+//最初の画面での文字列を表示
+untypedfield.textContent = 'スタートボタンで開始';
