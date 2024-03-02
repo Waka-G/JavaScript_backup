@@ -2,6 +2,7 @@
 /* 画面に表示する文字列を入れる変数（ここではuntypedという名前にする）を準備する */
 let untyped = '';
 let typed = '';
+let score = 0;  //スコア機能(score)用の変数
 
 //必要なHTML要素の取得
 /* getElementById()メソッドでHTML要素（ここではuntypedfieldという名前にする）を取得する */
@@ -71,6 +72,9 @@ const keyPress = e => {
     }
 
     //正タイプの場合
+    //スコアのインクリメント(数値に1加算すること)
+    score++;
+
     //正タイプ時にclassList.remove()メソッドでclass属性（mistyped）を削除し、背景色を元に戻す
     wrap.classList.remove('mistyped');
     console.log(e.key);
@@ -86,6 +90,32 @@ const keyPress = e => {
 };
 
 //タイピングスキルのランクを判定
+const rankCheck = score => {
+    //スコアの値を返す
+    //「`」バッククォートは「@キー + shiftキー」を押す
+    // return `${score}文字打てました！`;
+
+    //テキストを格納する変数を作る
+    let text = '';
+
+    //スコアに応じて異なるメッセージを変数textに格納する
+    if(score < 100) {
+        //「`」バッククォートで記述する
+        text = `あなたのランクはCです。\nBランクまであと${100-score}文字です。`;
+    }
+    else if(score < 200) {
+        text = `あなたのランクはBです。\nAランクまであと${200-score}文字です。`;
+    }
+    else if(score < 300) {
+        text = `あなたのランクはAです。\nSランクまであと${300-score}文字です。`;
+    }
+    else if(score >= 300) {
+        text = `あなたのランクはSです。\nおめでとうございます!`;
+    }
+
+    //生成したメッセージと一緒に文字列を返す
+    return `${score}文字打てました!\n${text}\n【OK】リトライ 【キャンセル】終了/ `;
+};
 
 //ゲームを終了
 const gameOver = id => {
@@ -94,6 +124,16 @@ const gameOver = id => {
     clearInterval(id);  //タイマーを停止する
 
     console.log('ゲーム終了！');
+    //confirm ()メソッド
+    //「OK」:ture「キャンセル」:falseボタン付きのダイアログを表示する。
+    //戻り値でどちらのボタンがクリックされたかを判別できる
+    const result = confirm(rankCheck(score));
+
+    //定数resultから「OK」:tureを戻り値として取得した際に、
+    //ブラウザをリロードできるようにする
+    if(result == true) {
+        window.location.reload();
+    }
 };
 
 //カウントダウンタイマー
